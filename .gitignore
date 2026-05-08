@@ -1,0 +1,12 @@
+# datasets
+*.pkl
+datasets/
+*__pycache__/
+*.egg-info/
+dist/
+build/
+# python cache
+*.pyc
+# OS files
+.DS_Store
+Thumbs.db

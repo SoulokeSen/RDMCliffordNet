@@ -1,0 +1,69 @@
+name: rdmft
+project: rdmft-clifford
+entity: badboyz2000
+program: /Users/souloke/Programs/RDMCliffordNet/mvn/rdmft.py 
+method: grid
+
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - --dtype=float64
+  - --trainer.module=engineer.trainer.Trainer
+#  - --trainer.val_check_interval=35
+#  - --trainer.max_steps=105000
+  - --trainer.train_metrics=[loss]
+  - --trainer.test_metrics=[loss]
+  - --trainer.gradclip=adaptive
+#  - --trainer.log_interval=35
+  - --trainer.energyOnly=False
+  # Dataset
+  - --dataset.module=data.rdmft.RDMFT
+  - --dataset.batch_size=10
+  - --dataset.pathroot="/Users/souloke/Programs/RDMCliffordNet/datasets/rdmft/ethylene_stretch/casci_4_4/withprecompChol"
+  - --dataset.filename="ethylene"
+  - --dataset.n_train=350
+  - --dataset.n_val=75
+  - --dataset.n_test=75
+  # Optimizer
+  - --optimizer.module=torch.optim.AdamW
+  - --optimizer.foreach=False
+  - --optimizer.min_lrs=False
+  - --optimizer.decay_steps=0.25
+#  - --optimizer.lr=5e-3
+#  - --optimizer.wlr=5e-5
+  - --optimizer.weight_decay=1e-4
+  # EGNN
+  - --model.module=models.rdmft_clifford_egnn.RDMFTEGNN_C
+  - --model.nspatialorbs=4
+#  - --model.printstep=35
+  # - --model.energyOnly=False
+  # - --model.weight_reg=1e-4
+  # - --model.regtype="L1"  
+  # loss module
+#  - -- loss.printstep=35
+  - -- loss.module=losses.loss2RDM.RDM2sLoss
+  - -- loss.energyOnly=False
+  - -- loss.weight_reg=1e-4
+  - -- loss.regtype="L1"
+  - ${args}
+
+
+parameters:
+  trainer.max_steps:      
+    values: [35000]
+    
+  optimizer.lr:
+    values: [5e-3] 
+
+  optimizer.wlr:
+    values: [5e-3]   
+    
+  model.num_layers:
+    values: [3] 
+
+  seed:
+    values: [0]
+    
+
+    
